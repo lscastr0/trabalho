@@ -1,0 +1,203 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include <string.h>
+
+
+FILE *arq;
+
+
+struct ALUNO
+{
+    char nome[50];
+    int idade;
+    int id_t; // obtera da nossa variavel controladora do indice de turma
+};
+
+struct MATERIA
+{
+    char nome[30];
+    int cargah;
+};
+
+struct TURMA
+{
+    char nome[30];
+    int turno;
+};
+
+struct TXM
+{
+    int id_t;
+    int id_m;
+};
+
+struct BOLETIM
+{
+    int id_a;
+    int id_m;
+    float nota_prova[3];
+};
+
+void cadastraAluno(int id_a, int id_t, struct ALUNO *aluno, struct TURMA *turma, int sair, char *palavra, int id_tempo);
+
+main()
+{
+
+    struct ALUNO aluno;
+
+    //struct MATERIA materia;
+
+    struct TURMA turma;
+
+    //struct TXM txm;
+
+    //struct BOLETIM boletim;
+
+    int id_a = 0, id_t = 0; // posicao no vetor da estrutura
+                                               // contadores
+
+    int op,                // opcao do menu principal
+        sair = 0,          // saida e cancelamento dos laços
+        id_temp, id_temp2; // var temporaria para identificadores
+
+    
+
+    char palavra[30],*str; // var temporaria para verificacao de termino do laço secundario
+    str=palavra;
+    srand(time(0)); // inicializa o randomico
+
+    while (!sair)
+    {
+        system("cls");
+
+        printf("\n---------- Escola Saber Compartilhado -----------\n\n\n");
+        printf("\n---------- Menu Principal -----------\n\n\n");
+        printf("\n  1 - Cadastrar Aluno \n");
+        printf("\n  2 - Cadastrar Materia \n");
+        printf("\n  3 - Cadastrar Turma \n");
+        printf("\n  4 - Cadastrar Turma x Materia \n");
+        printf("\n  5 - Gerar notas \n");
+        printf("\n  6 - Boletim de aluno \n");
+        printf("\n  7 - Boletim de turma \n");
+        printf("\n  0 - Sair \n");
+        printf("\n\n\n\n  Opcao: \n");
+        scanf("%d", &op);
+
+        switch (op)
+        {
+        //  Cadastrar Aluno
+        case 1:
+            do{
+                            
+                cadastraAluno(id_a, id_t, &aluno, &turma, sair, str, id_temp);
+
+            }while(sair!=0);
+            sair = 0;
+            break;
+
+        case 2:
+            // Cadastrar Materia
+
+           
+            sair = 0;
+            break;
+
+        case 3:
+            // Cadastrar Turma
+
+            sair = 0;
+            break;
+
+        case 4:
+
+            // Cadastrar Turma x Materia
+
+            sair = 0;
+            break;
+
+        case 5:
+
+            // Gerar notas
+
+            // verifico se existe aluno e TxM
+            break;
+
+        case 6:
+
+            // Boletim de aluno
+
+            sair = 0;
+            break;
+
+        case 7:
+
+            // Boletim de turma
+
+            sair = 0;
+            break;
+
+        case 0:
+            // Sair
+            sair = 1;
+            break;
+
+        default:
+            // Erro
+            printf("Opcao invalida!\nEscolha novamente!\n");
+            system("pause");
+        }
+    }
+}
+
+void cadastraAluno(int id_a, int id_t, struct ALUNO *aluno, struct TURMA *turma, int sair, char *palavra, int id_temp)
+{
+    
+    system("cls");
+    if (id_t == 0)
+    { // Verifica a existencia de turmas
+        printf("Atencao: Cadastre uma turma primeiro!\n");
+        system("pause");
+        return;
+    }
+    printf("\n---------- Cadastro de aluno -----------\n\n\n");
+    do
+    {
+        if (id_a >= 30)
+        {
+            printf("Ja alcancamos o maximo de alunos\n");
+            system("pause");
+            sair = 1;
+        }
+        else
+        {
+            printf("\n\nNome do aluno %d ......: ", id_a + 1);
+            fflush(stdin); // limpa o buffer de teclado
+            gets(palavra);
+            if (strcmp(palavra, "fim") == 0)
+                sair = 1;
+            else
+            {
+                strcpy((*aluno[id_a]).nome, palavra);
+                printf("Idade do aluno %d .....: ", id_a + 1);
+                scanf("%d", (*aluno[id_a]).idade);
+
+                printf("Turmas cadastradas:\n"); // Lista as turmas
+                for (int x = 0; x < id_t; x++)
+                    printf("%d - %s\t", x, (*turma[x]).nome);
+                do
+                { // verifica se a turma entrada existe, senao pede novamente
+                    printf("\n\nTurma do aluno:");
+                    scanf("%d",&id_temp);
+                    if (id_temp < 0 || id_temp >= id_t)
+                        printf("Turma invalida");
+                    else
+                        (*aluno[id_a]).id_t = id_temp;
+                } while (id_temp < 0 || id_temp >= id_t);
+
+                id_a++;
+            }
+        }
+    } while (!sair);
+}
