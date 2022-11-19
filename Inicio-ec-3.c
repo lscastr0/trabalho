@@ -20,7 +20,7 @@ struct ALUNO
 struct TURMA
 {
     char nome[30];
-    int turno;
+    char turno[30];
 };
 
 struct MATERIA
@@ -127,8 +127,11 @@ void cadastraTurma(int *id_aux, int *sair, char *palavra, struct TURMA *turma)
             else
             {
                 strcpy(turma[id_t].nome, palavra);
-                printf("Carga Horaria da turma %d .....: ", id_t + 1);
+                printf("Turno da turma %d .....: ", id_t + 1);
+                /*
                 scanf("%d", &turma[id_t].turno);
+                */
+                gets(turma[id_t].turno);
 
                 id_t++;
             }
@@ -442,7 +445,7 @@ void Boletimdeturma(int *id_aux, int *id_tAux, int *id_bAux, struct BOLETIM *bol
 
         if (*id_temp >= 0)
         {
-            printf("\nBoletim do Turma:%s do turno %d.\n\n", turma[aux].nome, turma[aux].turno);
+            printf("\nBoletim do Turma:%s do turno %s.\n\n", turma[aux].nome, turma[aux].turno);
 
             // percorro a estrutura de aluno para obter os alunos que são da turma escolhida,
             // indo depois no boletim para listar as notas
