@@ -115,6 +115,7 @@ void cadastraTurma(int *id_aux, int *sair, char *palavra, struct TURMA *turma)
         {
             printf("Ja alcancamos o maximo de turmas - saia digitando fim");
             system("pause");
+            fflush(stdin);
             *sair = 1;
         }
         else
