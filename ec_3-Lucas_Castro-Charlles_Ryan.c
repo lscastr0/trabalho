@@ -357,14 +357,14 @@ void Boletimdealuno(int *id_aux, int *id_bAux, struct BOLETIM *boletim, struct A
                 strcat(nomeArq, " - ");
                 strcat(nomeArq, turma[aluno[aux].id_t].nome);
                 strcat(nomeArq, ".txt");
-            }
 
-            if ((arq = fopen(nomeArq, "w")) == NULL)
-            {
-                // crio o arquivo para gravacao
-                printf("Erro na criacao do arquivo"); // verificando se deu erro
-                system("pause");
-                exit(1);
+                if ((arq = fopen(nomeArq, "w")) == NULL)
+                {
+                    // crio o arquivo para gravacao
+                    printf("Erro na criacao do arquivo"); // verificando se deu erro
+                    system("pause");
+                    exit(1);
+                }
             }
 
             printf("\nBoletim do Aluno:%s, que tem %d anos.\n\n", aluno[aux].nome, aluno[aux].idade);
