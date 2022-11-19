@@ -113,9 +113,8 @@ void cadastraTurma(int *id_aux, int *sair, char *palavra, struct TURMA *turma)
 
         if (id_t >= 5)
         {
-            printf("Ja alcancamos o maximo de turmas - saia digitando fim");
+            printf("Ja alcancamos o maximo de turmas");
             system("pause");
-            fflush(stdin);
             *sair = 1;
         }
         else
@@ -147,7 +146,7 @@ void cadastraMateria(int *id_aux, int *sair, char *palavra, struct MATERIA *mate
     {
         if (id_m >= 10)
         {
-            printf("Ja alcancamos o maximo de materias - saia digitando fim");
+            printf("Ja alcancamos o maximo de materias");
             system("pause");
             *sair = 1;
         }
@@ -178,9 +177,9 @@ void turmaMateria(int *id_tAux, int *id_mAux, int *id_aux, struct TURMA *turma, 
     int id_m = *id_mAux;
 
     // verifico a exitencia das turmas e das materias
-    if (id_t == 0 && id_m == 0)
+    if (id_t == 0 || id_m == 0)
     {
-        printf("Atencao: Cadastre uma turma e/ou materia primeiro!\n");
+        printf("Atencao: Cadastre uma turma e materia primeiro!\n");
         system("pause");
         return;
     }
@@ -188,7 +187,7 @@ void turmaMateria(int *id_tAux, int *id_mAux, int *id_aux, struct TURMA *turma, 
     // Listamos a relação turma X materia existentes
     if (id_txm > 0)
     {
-        // PAREI AQUI!!!!!!!!
+
         printf("Cadastro existente\n\nTurma\tMateria\n=====\t=======\n");
         for (int x = 0; x < id_txm; x++)
             printf("%s\t%s\n", turma[txm[x].id_t].nome, materia[txm[x].id_m].nome);
@@ -206,7 +205,7 @@ void turmaMateria(int *id_tAux, int *id_mAux, int *id_aux, struct TURMA *turma, 
     //  Agora vamos cadastrar
     do
     {
-        printf("\n\nCodigo da turma ......: ");
+        printf("\n\nCodigo da turma (-1 sair) ......: ");
         fflush(stdin); // limpa o buffer de teclado
         scanf("%d", id_temp);
         if (*id_temp < 0 || *id_temp >= id_t)
@@ -224,7 +223,7 @@ void turmaMateria(int *id_tAux, int *id_mAux, int *id_aux, struct TURMA *turma, 
         {
             do
             {
-                printf("\n\nCodigo da materia ......: ");
+                printf("\n\nCodigo da materia (-1 sair) ......: ");
                 fflush(stdin); // limpa o buffer de teclado
                 scanf("%d", id_temp2);
                 // vamos verificar a entrada invalida ou o cancelamento da insercao txm
@@ -269,7 +268,7 @@ void Gerarnotas(int *id_txmAux, int *id_bAux, int *id_aux, struct BOLETIM *bolet
         sup = 100; // maior limite dos numeros gerados
 
     // verifico se existe aluno e TxM
-    if (id_a == 0 && id_txm == 0)
+    if (id_a == 0 || id_txm == 0)
     {
         printf("Atencao: nao eh possivel gerar notas sem alunos x turma x materia!\n");
         *sair = 1;
@@ -313,7 +312,7 @@ void Boletimdealuno(int *id_aux, int *id_bAux, struct BOLETIM *boletim, struct A
     {
         printf("Não existem alunos com notas geradas!\n");
         system("pause");
-        *sair = 1;
+        return;
     }
 
     // Listo os alunos para escolha
@@ -330,17 +329,17 @@ void Boletimdealuno(int *id_aux, int *id_bAux, struct BOLETIM *boletim, struct A
         {
             printf("De qual aluno deseja ver o boletim? ( -1 para sair ): ");
             scanf("%d", id_temp);
-            if (id_temp >= id_a)
+            if (*id_temp >= id_a)
                 printf("Matricula inexistente\n");
-            else if (id_temp < 0)
+            else if (*id_temp < 0)
             {
                 *sair = 1;
             }
-        } while (id_temp >= id_a);
+        } while (*id_temp >= id_a);
 
         aux = *id_temp;
 
-        if (id_temp >= 0)
+        if (*id_temp >= 0)
         {
             char grava, msg[250], msgaux[250], nomeArq[85];
 
@@ -397,22 +396,22 @@ void Boletimdealuno(int *id_aux, int *id_bAux, struct BOLETIM *boletim, struct A
 
             fclose(arq);
         }
-    } while (!sair);
+    } while (!*sair);
     *sair = 0;
 }
 
-void Boletimdeturma(int *id_aux,int *id_tAux,int *id_bAux, struct BOLETIM *boletim,  struct ALUNO *aluno, struct TURMA *turma, struct MATERIA *materia, int *id_temp, int *id_temp2, int *sair)
+void Boletimdeturma(int *id_aux, int *id_tAux, int *id_bAux, struct BOLETIM *boletim, struct ALUNO *aluno, struct TURMA *turma, struct MATERIA *materia, int *id_temp, int *id_temp2, int *sair)
 {
     int id_t = *id_tAux;
     int id_b = *id_bAux;
     int id_a = *id_aux;
-    int aux = 0;  
+    int aux = 0;
     // verifico a exitencia das notas geradas
     if (id_b == 0)
     {
         printf("Não existem alunos com notas geradas!\n");
         system("pause");
-        *sair=1;
+        return;
     }
 
     // Listo turmas para escolha
@@ -430,18 +429,18 @@ void Boletimdeturma(int *id_aux,int *id_tAux,int *id_bAux, struct BOLETIM *bolet
             printf("De qual turma deseja ver o boletim? ( -1 para sair ): ");
             scanf("%d", id_temp);
 
-            if (id_temp >= id_t)
+            if (*id_temp >= id_t)
                 printf("Turma inexistente\n");
-            else if (id_temp < 0)
+            else if (*id_temp < 0)
             {
                 *sair = 1;
             }
 
-        } while (id_temp >= id_a);
+        } while (*id_temp >= id_a);
 
-        aux=*id_temp;
+        aux = *id_temp;
 
-        if (id_temp >= 0)
+        if (*id_temp >= 0)
         {
             printf("\nBoletim do Turma:%s do turno %d.\n\n", turma[aux].nome, turma[aux].turno);
 
@@ -458,12 +457,12 @@ void Boletimdeturma(int *id_aux,int *id_tAux,int *id_bAux, struct BOLETIM *bolet
                     {
                         if (boletim[y].id_a == x)
                         {
-                            if (id_temp2 == 0)
+                            if (*id_temp2 == 0)
                             {
                                 printf("Aluno: %s\n", aluno[x].nome);
                                 printf("Materia\tNota 1\tNota 2\tNota 3\n=======\t======\t======\t======\n");
                             }
-                            id_temp2++; // para nao imprimir o cabecalho acima
+                            *id_temp2++; // para nao imprimir o cabecalho acima
                             printf("%s\t", materia[boletim[y].id_m].nome);
                             for (int z = 0; z < 3; z++)
                             {
@@ -476,9 +475,9 @@ void Boletimdeturma(int *id_aux,int *id_tAux,int *id_bAux, struct BOLETIM *bolet
                 }
             }
         }
-    } while (!sair);
+    } while (!*sair);
 
-    *sair=0;
+    *sair = 0;
 }
 
 main()
@@ -580,7 +579,6 @@ main()
             system("cls");
             printf("\n---------- Boletim do Aluno -----------\n\n\n");
             Boletimdealuno(&id_a, &id_b, boletim, aluno, materia, turma, &id_temp, &sair);
-            system("pause");
             sair = 0;
             break;
 
@@ -590,7 +588,7 @@ main()
 
             system("cls");
             printf("\n---------- Boletim da turma -----------\n\n\n");
-            Boletimdeturma(&id_a,&id_t,&id_b, boletim, aluno, turma, materia, &id_temp, &id_temp2, &sair);
+            Boletimdeturma(&id_a, &id_t, &id_b, boletim, aluno, turma, materia, &id_temp, &id_temp2, &sair);
             sair = 0;
             break;
 
