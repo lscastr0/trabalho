@@ -448,7 +448,7 @@ void Boletimdeturma(int *id_aux, int *id_tAux, int *id_bAux, struct BOLETIM *bol
             // indo depois no boletim para listar as notas
             for (int x = 0; x < id_a; x++)
             {
-                if (aluno[x].id_t == id_temp)
+                if (aluno[x].id_t == *id_temp)
                 {
 
                     *id_temp2 = 0; //(ira verificar se continua sendo o mesmo aluno ja impresso)
